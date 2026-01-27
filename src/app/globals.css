@@ -1,0 +1,151 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --cyan: #00FFD1;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  background: #000;
+  color: #fff;
+}
+
+body {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  background: #000;
+  overflow-x: hidden;
+}
+
+/* 3D Geometric Shape */
+.geo-scene {
+  perspective: 800px;
+  width: 300px;
+  height: 300px;
+}
+
+.geo-cube {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  animation: geo-spin 12s linear infinite;
+}
+
+.geo-cube .face {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  left: 50px;
+  top: 50px;
+  border: 1.5px solid var(--cyan);
+  background: rgba(0, 255, 209, 0.03);
+  box-shadow: 0 0 30px rgba(0, 255, 209, 0.15), inset 0 0 30px rgba(0, 255, 209, 0.05);
+}
+
+.face.front  { transform: rotateY(0deg) translateZ(100px); }
+.face.back   { transform: rotateY(180deg) translateZ(100px); }
+.face.right  { transform: rotateY(90deg) translateZ(100px); }
+.face.left   { transform: rotateY(-90deg) translateZ(100px); }
+.face.top    { transform: rotateX(90deg) translateZ(100px); }
+.face.bottom { transform: rotateX(-90deg) translateZ(100px); }
+
+/* Inner octahedron */
+.geo-octa {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  animation: geo-spin-reverse 8s linear infinite;
+}
+
+.geo-octa .tri {
+  position: absolute;
+  width: 0; height: 0;
+  left: 50%;
+  top: 50%;
+  border-left: 60px solid transparent;
+  border-right: 60px solid transparent;
+  border-bottom: 100px solid rgba(0, 255, 209, 0.08);
+  margin-left: -60px;
+  margin-top: -50px;
+  filter: drop-shadow(0 0 10px rgba(0, 255, 209, 0.3));
+}
+
+.tri:nth-child(1) { transform: rotateY(0deg) rotateX(35deg) translateZ(70px); }
+.tri:nth-child(2) { transform: rotateY(90deg) rotateX(35deg) translateZ(70px); }
+.tri:nth-child(3) { transform: rotateY(180deg) rotateX(35deg) translateZ(70px); }
+.tri:nth-child(4) { transform: rotateY(270deg) rotateX(35deg) translateZ(70px); }
+.tri:nth-child(5) { transform: rotateY(0deg) rotateX(-35deg) translateZ(70px) rotateX(180deg); }
+.tri:nth-child(6) { transform: rotateY(90deg) rotateX(-35deg) translateZ(70px) rotateX(180deg); }
+.tri:nth-child(7) { transform: rotateY(180deg) rotateX(-35deg) translateZ(70px) rotateX(180deg); }
+.tri:nth-child(8) { transform: rotateY(270deg) rotateX(-35deg) translateZ(70px) rotateX(180deg); }
+
+@keyframes geo-spin {
+  from { transform: rotateX(-20deg) rotateY(0deg); }
+  to   { transform: rotateX(-20deg) rotateY(360deg); }
+}
+
+@keyframes geo-spin-reverse {
+  from { transform: rotateX(30deg) rotateY(360deg); }
+  to   { transform: rotateX(30deg) rotateY(0deg); }
+}
+
+/* Glow pulse on the shape */
+.geo-scene::after {
+  content: '';
+  position: absolute;
+  inset: -40px;
+  background: radial-gradient(circle, rgba(0,255,209,0.12) 0%, transparent 70%);
+  animation: glow-pulse 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.1); }
+}
+
+/* Scroll indicator */
+@keyframes scroll-bounce {
+  0%, 100% { transform: translateY(0); opacity: 1; }
+  50% { transform: translateY(8px); opacity: 0.5; }
+}
+
+.scroll-indicator {
+  animation: scroll-bounce 2s ease-in-out infinite;
+}
+
+/* Category card hover */
+.cat-card {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.cat-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(0, 255, 209, 0.2);
+  transition: all 0.5s ease;
+}
+
+.cat-card:hover::before {
+  border-color: var(--cyan);
+  box-shadow: inset 0 0 60px rgba(0, 255, 209, 0.1), 0 0 30px rgba(0, 255, 209, 0.1);
+}
+
+/* Bracket decorations */
+.bracket-left::before,
+.bracket-right::after {
+  color: var(--cyan);
+  font-size: 2rem;
+  opacity: 0.5;
+  font-weight: 100;
+}
+.bracket-left::before { content: '['; margin-right: 1rem; }
+.bracket-right::after { content: ']'; margin-left: 1rem; }
