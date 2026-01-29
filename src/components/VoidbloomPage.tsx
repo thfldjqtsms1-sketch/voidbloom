@@ -35,11 +35,17 @@ export default function VoidbloomPage({ lang }: { lang: Lang }) {
       {/* NAV */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-black/60 backdrop-blur-md border-b border-white/5">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <a href={lang === "en" ? "/" : "/ko/"} className="text-lg font-bold tracking-[0.3em] text-cyan-accent">
+          <motion.a
+            href={lang === "en" ? "/" : "/ko/"}
+            whileHover={{ scale: 1.05, letterSpacing: "0.4em" }}
+            whileTap={{ scale: 0.95 }}
+            className="text-lg font-bold tracking-[0.3em] text-cyan-accent"
+          >
             VOIDBLOOM
-          </a>
+          </motion.a>
           <div className="flex items-center gap-8 text-sm tracking-wider">
             <a href="#about" className="hover:text-cyan-accent transition-colors">{t.nav.about}</a>
+            <a href="#process" className="hover:text-cyan-accent transition-colors">{t.nav.process}</a>
             <a href="#work" className="hover:text-cyan-accent transition-colors">{t.nav.work}</a>
             <a href="#contact" className="hover:text-cyan-accent transition-colors">{t.nav.contact}</a>
             <a href={otherLang} className="border border-white/20 px-3 py-1 hover:border-cyan-accent hover:text-cyan-accent transition-all">
@@ -107,7 +113,46 @@ export default function VoidbloomPage({ lang }: { lang: Lang }) {
         </div>
       </Section>
 
-      {/* CATEGORIES */}
+      {/* PHILOSOPHY */}
+      <Section className="bg-white/[0.01] border-y border-white/5 py-40">
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          <span className="text-xs tracking-[0.5em] text-cyan-accent uppercase mb-8 block">Manifesto</span>
+          <h2 className="text-3xl md:text-5xl font-bold mb-12 tracking-tight">{t.philosophy.title}</h2>
+          <p className="text-xl md:text-2xl text-gray-300 font-light leading-relaxed mb-12 italic">
+            "{t.philosophy.text}"
+          </p>
+          <div className="h-px w-24 bg-cyan-accent/30 mx-auto mb-12" />
+          <p className="text-sm tracking-[0.2em] text-gray-500 uppercase max-w-2xl mx-auto leading-loose">
+            {t.philosophy.vision}
+          </p>
+        </div>
+      </Section>
+
+      {/* PROCESS / METHODOLOGY */}
+      <Section className="max-w-7xl mx-auto px-6 py-40">
+        <div id="process" className="scroll-mt-20">
+          <div className="flex flex-col md:flex-row items-end justify-between mb-20 gap-8">
+            <h2 className="text-5xl md:text-7xl font-bold tracking-tighter">{t.process.title}</h2>
+            <p className="text-gray-500 max-w-md text-right tracking-wide uppercase text-xs leading-relaxed">
+              Synthesizing biological intuition with algorithmic precision to redefine the boundaries of spatial experience.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-1px bg-white/10 border border-white/10">
+            {(["sound", "light", "motion"] as const).map((key) => (
+              <div key={key} className="bg-black p-12 hover:bg-white/[0.02] transition-colors group">
+                <h3 className="text-cyan-accent text-xs tracking-[0.3em] uppercase mb-12 border-b border-cyan-accent/20 pb-4 inline-block">
+                  {t.process[key].name}
+                </h3>
+                <p className="text-gray-400 leading-relaxed text-sm group-hover:text-white transition-colors duration-500">
+                  {t.process[key].desc}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </Section>
+
+      {/* CATEGORIES / DIMENSIONS */}
       <Section className="max-w-6xl mx-auto px-6 py-32">
         <h2 className="text-3xl font-bold tracking-[0.2em] text-center mb-20">{t.categories.title}</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -148,13 +193,18 @@ export default function VoidbloomPage({ lang }: { lang: Lang }) {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: i * 0.1 }}
-                className="flex items-center justify-between py-6 border-b border-white/5 group cursor-pointer hover:border-cyan-accent/30 transition-colors"
+                className="flex flex-col py-10 border-b border-white/5 group cursor-pointer hover:border-cyan-accent/30 transition-colors"
               >
-                <div className="flex items-center gap-6">
-                  <span className="text-sm text-gray-600 font-mono">{item.year}</span>
-                  <h3 className="text-xl font-medium group-hover:text-cyan-accent transition-colors">{item.name}</h3>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-6">
+                    <span className="text-sm text-gray-600 font-mono tracking-tighter">{item.year}</span>
+                    <h3 className="text-2xl md:text-3xl font-medium group-hover:text-cyan-accent transition-colors tracking-tight">{item.name}</h3>
+                  </div>
+                  <span className="text-sm text-gray-500 tracking-[0.2em] uppercase">{item.loc}</span>
                 </div>
-                <span className="text-sm text-gray-600 tracking-wider">{item.loc}</span>
+                <p className="text-gray-500 text-sm max-w-2xl leading-relaxed group-hover:text-gray-300 transition-colors">
+                  {item.desc}
+                </p>
               </motion.div>
             ))}
           </div>
@@ -167,7 +217,7 @@ export default function VoidbloomPage({ lang }: { lang: Lang }) {
           <p className="text-sm tracking-[0.3em] text-gray-500 mb-6 uppercase">{t.cta.sub}</p>
           <h2 className="text-4xl md:text-6xl font-bold mb-10">{t.cta.text}</h2>
           <a
-            href="#"
+            href="mailto:contact@voidbloom.art"
             className="inline-block border border-cyan-accent text-cyan-accent px-10 py-4 text-sm tracking-[0.3em] uppercase hover:bg-cyan-accent hover:text-black transition-all duration-500"
           >
             {t.cta.text}
